@@ -25,5 +25,21 @@ class M_Transaksi extends CI_Model {
         $today = date('Y-m-d');
         return $this->db->where('DATE(tanggal)', $today)->count_all_results('transaksi');
     }
+    public function get_transaksi($id) {
+        $this->db->select('t.*, u.nama_lengkap as kasir');
+        $this->db->from('transaksi t');
+        $this->db->join('users u', 'u.id = t.user_id');
+        $this->db->where('t.id', $id);
+        return $this->db->get()->row();
+    }
+    
+    public function get_detail($transaksi_id) {
+        $this->db->select('d.*, m.nama_menu, m.harga');
+        $this->db->from('transaksi_detail d');
+        $this->db->join('menu m', 'm.id = d.menu_id');
+        $this->db->where('d.transaksi_id', $transaksi_id);
+        return $this->db->get()->result();
+    }
+    
 }
 ?>

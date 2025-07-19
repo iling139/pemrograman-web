@@ -47,12 +47,30 @@ class Transaksi extends CI_Controller {
                 'metode_pembayaran' => $metode_pembayaran
             ], $detail);
 
+            redirect('transaksi/struk/'.$transaksi_id);
             $this->session->set_flashdata('success', 'Transaksi berhasil disimpan!');
         } else {
             $this->session->set_flashdata('error', 'Tidak ada item yang dipilih.');
+            redirect('transaksi');
         }
 
         redirect('transaksi');
     }
+    public function struk($id) {
+        $this->load->model('M_Transaksi');
+    
+        // Ambil transaksi + detail
+        $data['transaksi'] = $this->M_Transaksi->get_transaksi($id);
+        $data['detail']    = $this->M_Transaksi->get_detail($id);
+    
+        if (!$data['transaksi']) {
+            show_404();
+        }
+    
+        // Tampilkan struk view
+        $this->load->view('transaksi/struk', $data);
+    }
+    
+
 }
 ?>

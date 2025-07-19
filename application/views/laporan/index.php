@@ -71,6 +71,9 @@
     <a href="<?= site_url('dashboard'); ?>" class="bg-gray-500 text-white px-4 py-2 rounded">Kembali</a>
     <!-- Tombol cetak dengan filter aktif -->
     <a href="<?= site_url('laporan/cetak?tanggal_awal='.$tanggal_awal.'&tanggal_akhir='.$tanggal_akhir.'&metode_pembayaran='.$metode) ?>" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded">Cetak PDF</a>
+    <!-- Tombol Export Excel -->
+    <a href="<?= site_url('laporan/excel?tanggal_awal='.$tanggal_awal.'&tanggal_akhir='.$tanggal_akhir.'&metode_pembayaran='.$metode) ?>"
+      class="bg-yellow-500 text-white px-4 py-2 rounded">Export Excel</a>
   </div>
 
 </body>

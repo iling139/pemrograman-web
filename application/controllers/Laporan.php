@@ -45,6 +45,26 @@ class Laporan extends CI_Controller {
         $this->dompdf_gen->dompdf->render();
         $this->dompdf_gen->dompdf->stream("laporan_transaksi.pdf", array("Attachment" => false));
     }
+    public function excel() {
+        // Ambil filter yang sama dengan index
+        $tanggal_awal  = $this->input->get('tanggal_awal');
+        $tanggal_akhir = $this->input->get('tanggal_akhir');
+        $metode        = $this->input->get('metode_pembayaran');
+    
+        $data['transaksi'] = $this->M_Laporan->get_laporan($tanggal_awal, $tanggal_akhir, $metode);
+        $data['tanggal_awal']  = $tanggal_awal;
+        $data['tanggal_akhir'] = $tanggal_akhir;
+        $data['metode']        = $metode;
+    
+        // Header supaya browser langsung download sebagai Excel
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=laporan_transaksi.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+    
+        // Load view yang hanya tabel (HTML), Excel akan membaca ini
+        $this->load->view('laporan/excel', $data);
+    }
     
 }
 ?>

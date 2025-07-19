@@ -54,8 +54,9 @@ $route['dashboard'] = 'dashboard/index';
 $route['menu'] = 'menu/index';
 $route['menu/edit/(:num)'] = 'menu/edit/$1';
 $route['menu/add'] = 'menu/add';
-$route['pegawai'] = 'pegawai/index';
+$route['pengguna'] = 'pengguna/index';
 $route['transaksi'] = 'transaksi/index';
 $route['laporan'] = 'laporan/index';
 $route['laporan/cetak'] = 'laporan/cetak';
+$route['laporan/excel'] = 'laporan/excel';
 

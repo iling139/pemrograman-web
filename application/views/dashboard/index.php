@@ -13,7 +13,11 @@
       <a href="<?= site_url('auth/logout'); ?>" class="bg-red-500 text-white px-3 py-1 rounded">Logout</a>
     </div>
   </div>
-
+  
+  <?php if($this->session->userdata('role')=='admin'): ?>
+    <a href="<?= site_url('pengguna'); ?>" class="bg-indigo-500 text-white px-4 py-2 rounded">Kelola Pegawai</a>
+  <?php endif; ?>
+  
   <div class="grid grid-cols-2 gap-4">
     <div class="bg-white p-4 shadow rounded">
       <h2 class="font-semibold">Ringkasan Hari Ini</h2>
@@ -25,7 +29,7 @@
       <h2 class="font-semibold">Menu Admin</h2>
       <ul class="list-disc ml-4">
         <li><a href="<?= site_url('menu'); ?>" class="text-blue-500">Kelola Menu Kantin</a></li>
-        <li><a href="<?= site_url('pegawai'); ?>" class="text-blue-500">Kelola Pegawai</a></li>
+        <li><a href="<?= site_url('pengguna'); ?>" class="text-blue-500">Kelola Pengguna</a></li>
         <li><a href="<?= site_url('laporan'); ?>" class="text-blue-500">Laporan Penjualan</a></li>
       </ul>
     </div>
