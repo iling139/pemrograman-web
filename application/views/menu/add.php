@@ -8,7 +8,8 @@
   <div class="max-w-md mx-auto bg-white p-4 rounded shadow">
     <h1 class="text-xl font-bold mb-4">Tambah Menu</h1>
 
-    <form method="POST" action="<?= site_url('menu/add'); ?>">
+    <!-- Tambahkan enctype -->
+    <form method="POST" action="<?= site_url('menu/add'); ?>" enctype="multipart/form-data">
       <div class="mb-3">
         <label class="block font-semibold">Nama Menu</label>
         <input type="text" name="nama_menu" required class="w-full border p-2 rounded">
@@ -22,6 +23,12 @@
       <div class="mb-3">
         <label class="block font-semibold">Stok</label>
         <input type="number" name="stok" required class="w-full border p-2 rounded">
+      </div>
+      
+      <!-- Input file untuk gambar menu -->
+      <div class="mb-3">
+        <label class="block font-semibold">Gambar Menu</label>
+        <input type="file" name="gambar_menu" accept="image/*" required class="w-full border p-2 rounded">
       </div>
 
       <div class="flex justify-between">
