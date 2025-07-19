@@ -57,3 +57,5 @@ $route['menu/add'] = 'menu/add';
 $route['pegawai'] = 'pegawai/index';
 $route['transaksi'] = 'transaksi/index';
 $route['laporan'] = 'laporan/index';
+$route['laporan/cetak'] = 'laporan/cetak';
+
