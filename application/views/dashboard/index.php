@@ -14,9 +14,19 @@
     </div>
   </div>
   
-  <?php if($this->session->userdata('role')=='admin'): ?>
-    <a href="<?= site_url('pengguna'); ?>" class="bg-indigo-500 text-white px-4 py-2 rounded">Kelola Pegawai</a>
+  <?php $role = $this->session->userdata('role'); ?>
+
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+
+    <!-- Menu Transaksi (semua boleh) -->
+    <a href="<?= site_url('transaksi'); ?>" class="bg-green-500 text-white px-4 py-2 rounded">Transaksi</a>
+
+    <?php if($role == 'admin'): ?>
+      <!-- Hanya Admin bisa lihat ini -->
+      <a href="<?= site_url('laporan'); ?>" class="bg-blue-500 text-white px-4 py-2 rounded">Laporan</a>
+      <a href="<?= site_url('pegawai'); ?>" class="bg-indigo-500 text-white px-4 py-2 rounded">Kelola Pegawai</a>
   <?php endif; ?>
+
   
   <div class="grid grid-cols-2 gap-4">
     <div class="bg-white p-4 shadow rounded">

@@ -28,13 +28,8 @@ class Auth extends CI_Controller {
                 'logged_in' => TRUE
             ]);
 
-            // Arahkan sesuai role
-            if ($user->role == 'admin') {
-                redirect('dashboard');
-            } else {
-                redirect('transaksi');
-            }
-
+            redirect('dashboard');
+        
         } else {
             $this->session->set_flashdata('error', 'Username atau password salah!');
             redirect('auth');
