@@ -17,6 +17,7 @@
 
   <center>
     <h3>KANTIN DIGITAL</h3>
+    <p><strong>No. Antrian: <?= $transaksi->nomor_antrian ?></strong></p>
   </center>
 
   <p>
@@ -45,16 +46,17 @@
 
   <div class="line"></div>
   <p style="text-align:center;">-- Kantin Digital --</p>
+
   <script>
     window.onload = function() {
         window.print(); // buka dialog print
 
         // setelah selesai print, balik ke halaman transaksi
         window.onafterprint = function() {
-        window.location.href = "<?= site_url('transaksi'); ?>";
+          window.location.href = "<?= site_url('transaksi'); ?>";
         };
     }
-   </script>
+  </script>
 
 </body>
 </html>

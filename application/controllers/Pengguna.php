@@ -15,7 +15,7 @@ class Pengguna extends CI_Controller {
         $this->load->view('pengguna/index', $data);
     }
 
-    public function tambah() {
+    public function add() {
         if($this->input->post()) {
             $data = [
                 'username'      => $this->input->post('username'),
@@ -26,7 +26,7 @@ class Pengguna extends CI_Controller {
             $this->M_Pengguna->insert($data);
             redirect('pengguna');
         } else {
-            $this->load->view('pengguna/tambah');
+            $this->load->view('pengguna/add');
         }
     }
 
@@ -37,10 +37,12 @@ class Pengguna extends CI_Controller {
                 'nama_lengkap'  => $this->input->post('nama_lengkap'),
                 'role'          => $this->input->post('role')
             ];
-            // update password jika diisi
-            if($this->input->post('password')) {
-                $data['password'] = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+    
+            $password = $this->input->post('password');
+            if (!empty(trim($password))) {
+                $data['password'] = password_hash($password, PASSWORD_BCRYPT);
             }
+    
             $this->M_Pengguna->update($id, $data);
             redirect('pengguna');
         } else {
@@ -48,6 +50,7 @@ class Pengguna extends CI_Controller {
             $this->load->view('pengguna/edit', $data);
         }
     }
+    
 
     public function hapus($id) {
         $this->M_Pengguna->delete($id);

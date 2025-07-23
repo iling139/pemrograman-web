@@ -15,37 +15,36 @@ class Menu extends CI_Controller {
         $this->load->view('menu/index', $data);
     }
 
-    public function add()
-{
-    if ($this->input->post()) {
-        // Proses upload gambar
-        $config['upload_path'] = './uploads/menu/';
-        $config['allowed_types'] = 'jpg|jpeg|png|gif';
-        $config['max_size'] = 2048; // 2MB
+    public function add(){
+        if ($this->input->post()) {
+            // Proses upload gambar
+            $config['upload_path'] = './uploads/menu/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = 2048; // 2MB
 
-        $this->load->library('upload', $config);
+            $this->load->library('upload', $config);
 
-        if ($this->upload->do_upload('gambar_menu')) {
-            $upload_data = $this->upload->data();
-            $gambar_menu = $upload_data['file_name'];
+            if ($this->upload->do_upload('gambar')) {
+                $upload_data = $this->upload->data();
+                $gambar = $upload_data['file_name'];
+            } else {
+                $gambar = ''; // bisa juga NULL
+            }
+
+            // Simpan data ke database
+            $data = [
+                'nama_menu' => $this->input->post('nama_menu'),
+                'harga' => $this->input->post('harga'),
+                'stok' => $this->input->post('stok'),
+                'gambar' => $gambar // <- perbaikan di sini
+            ];
+
+            $this->db->insert('menu', $data);
+            redirect('menu');
         } else {
-            $gambar_menu = '';
+            $this->load->view('menu/add');
         }
-
-        // Simpan data ke database
-        $data = [
-            'nama_menu' => $this->input->post('nama_menu'),
-            'harga' => $this->input->post('harga'),
-            'stok' => $this->input->post('stok'),
-            'gambar_menu' => $gambar_menu
-        ];
-
-        $this->db->insert('menu', $data);
-        redirect('menu');
-    } else {
-        $this->load->view('menu/add');
     }
-}
 
     public function edit($id) {
         if($this->input->post()) {
@@ -61,7 +60,7 @@ class Menu extends CI_Controller {
             $this->load->view('menu/edit', $data);
         }
     }    
-    
+     
 
     public function delete($id) {
         $this->M_Menu->delete($id);
