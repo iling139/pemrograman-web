@@ -1,62 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+  <meta charset="UTF-8">
   <title>Dashboard Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-gray-100 font-sans">
-  <div class="flex">
-    
-    <!-- Sidebar (tetap di tempat) -->
-    <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow z-10">
-      <?php $this->load->view('layouts/sidebar'); ?>
-    </aside>
-    <main class="ml-64 w-full p-6 overflow-y-auto">
 
-      <!-- Konten Utama -->
-      <div class="flex-1 p-4 overflow-y-auto">
-        
-        <!-- Tombol toggle sidebar mobile -->
-        <div class="md:hidden mb-4">
-          <button onclick="toggleSidebar()" class="bg-gray-800 text-white px-4 py-2 rounded">☰ Menu</button>
-        </div>
+<div class="flex">
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-screen w-16 md:w-64 bg-gray-900 text-white transition-all duration-300 z-10">
+    <?php $this->load->view('layouts/sidebar'); ?>
+  </aside>
 
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
-          <h1 class="text-2xl font-bold text-gray-700">Dashboard</h1>
-          <p class="text-gray-600">Halo, <b><?= $nama ?></b> (<?= $role ?>)</p>
-        </div>
-
-        <!-- Ringkasan & Navigasi Cepat -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold text-gray-700 mb-2">Ringkasan Hari Ini</h2>
-            <p>Total Transaksi: <b><?= $total_transaksi ?></b></p>
-          </div>
-          <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold text-gray-700 mb-2">Transaksi Cepat</h2>
-            <a href="<?= site_url('transaksi'); ?>" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Buat Transaksi</a>
-          </div>
-        </div>
-
-        <!-- Grafik -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold text-gray-700 mb-4">Grafik Penghasilan</h2>
-            <canvas id="grafikPenghasilan" height="150"></canvas>
-          </div>
-          <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold text-gray-700 mb-4">Menu Terlaris</h2>
-            <canvas id="donutMenu" height="150"></canvas>
-          </div>
-        </div>
+  <!-- Main -->
+  <main class="ml-16 md:ml-64 w-full p-8 space-y-8">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-7 h-7 text-blue-600"></i> Dashboard
+        </h1>
+        <p class="text-gray-600 mt-1">Selamat datang, <b><?= $nama ?></b> (<?= $role ?>)</p>
       </div>
-    </main>
-  </div>
+    </div>
 
-<!-- Chart JS -->
+    <!-- Ringkasan -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center gap-3 mb-2">
+          <i data-lucide="clipboard-list" class="w-6 h-6 text-green-500"></i>
+          <h2 class="text-lg font-semibold text-gray-700">Ringkasan Hari Ini</h2>
+        </div>
+        <p class="text-gray-600">Total Transaksi: <span class="font-bold text-gray-800"><?= $total_transaksi ?></span></p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-5">
+        <div class="flex items-center gap-3 mb-2">
+          <i data-lucide="plus-circle" class="w-6 h-6 text-blue-500"></i>
+          <h2 class="text-lg font-semibold text-gray-700">Transaksi Cepat</h2>
+        </div>
+        <a href="<?= site_url('transaksi'); ?>" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
+          Buat Transaksi
+        </a>
+      </div>
+    </div>
+
+    <!-- Grafik -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded shadow">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="line-chart" class="w-6 h-6 text-indigo-500"></i>
+          <h2 class="text-lg font-semibold text-gray-800">Grafik Penghasilan</h2>
+        </div>
+        <canvas id="grafikPenghasilan" height="150"></canvas>
+      </div>
+
+      <div class="bg-white p-6 rounded shadow">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="pie-chart" class="w-6 h-6 text-purple-500"></i>
+          <h2 class="text-lg font-semibold text-gray-800">Menu Terlaris</h2>
+        </div>
+        <canvas id="donutMenu" height="150"></canvas>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Chart.js -->
 <script>
 const ctx = document.getElementById('grafikPenghasilan').getContext('2d');
 new Chart(ctx, {
@@ -66,8 +78,8 @@ new Chart(ctx, {
     datasets: [{
       label: 'Penghasilan Harian (Rp)',
       data: <?= json_encode($penghasilan_harian) ?>,
-      borderColor: '#22c55e',
-      backgroundColor: 'rgba(34, 197, 94, 0.2)',
+      borderColor: '#3B82F6',
+      backgroundColor: 'rgba(59, 130, 246, 0.2)',
       fill: true,
       tension: 0.4,
     }]
@@ -93,7 +105,7 @@ new Chart(ctx2, {
     datasets: [{
       data: <?= json_encode(array_column($menu_terlaris, 'total')) ?>,
       backgroundColor: [
-        '#10B981', '#3B82F6', '#F59E0B', '#EF4444',
+        '#22c55e', '#3B82F6', '#F59E0B', '#EF4444',
         '#6366F1', '#14B8A6', '#A855F7', '#F472B6'
       ],
       borderWidth: 1
@@ -108,14 +120,13 @@ new Chart(ctx2, {
 });
 </script>
 
-<!-- Toggle Sidebar -->
+<!-- Lucide & Sidebar -->
 <script>
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('hidden');
 }
 lucide.createIcons();
-
 </script>
 
 </body>

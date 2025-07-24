@@ -28,19 +28,28 @@
     </tr>
   </thead>
   <tbody>
-    <?php 
-    $grand_total = 0;
-    foreach($transaksi as $t): 
-      $grand_total += $t->total;
-    ?>
-    <tr>
-      <td><?= date('d-m-Y H:i', strtotime($t->tanggal)) ?></td>
-      <td><?= $t->kasir ?></td>
-      <td><?= $t->tipe_layanan=='takeaway'?'Takeaway':'Makan di Tempat' ?></td>
-      <td><?= strtoupper($t->metode_pembayaran) ?></td>
-      <td><?= number_format($t->total,0,',','.') ?></td>
-    </tr>
-    <?php endforeach; ?>
+  <?php 
+$grand_total = 0;
+foreach($transaksi as $t): 
+  $grand_total += $t->total;
+?>
+<tr>
+  <td><?= date('d-m-Y H:i', strtotime($t->tanggal)) ?></td>
+  <td><?= $t->kasir ?></td>
+  <td><?= $t->tipe_layanan=='takeaway'?'Takeaway':'Makan di Tempat' ?></td>
+  <td><?= strtoupper($t->metode_pembayaran) ?></td>
+  <td><?= number_format($t->total,0,',','.') ?></td>
+</tr>
+<?php if (!empty($t->menu)): foreach($t->menu as $m): ?>
+<tr>
+  <td colspan="5" style="padding-left: 30px;">
+    - <?= $m->nama_menu ?> x<?= $m->qty ?> 
+    (Rp <?= number_format($m->subtotal, 0, ',', '.') ?>)
+  </td>
+</tr>
+<?php endforeach; endif; ?>
+<?php endforeach; ?>
+
   </tbody>
   <tfoot>
     <tr>

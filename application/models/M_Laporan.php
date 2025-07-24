@@ -24,12 +24,13 @@ class M_Laporan extends CI_Model {
     
         // Ambil menu dari detail_transaksi untuk setiap transaksi
         foreach ($transaksi as &$t) {
-            $this->db->select('dt.*, m.nama_menu');
+            $this->db->select('dt.nama_menu, dt.qty, dt.harga_satuan, dt.subtotal');
             $this->db->from('transaksi_detail dt');
-            $this->db->join('menu m', 'm.id = dt.menu_id');
             $this->db->where('dt.transaksi_id', $t->id);
             $t->menu = $this->db->get()->result();
         }
+        
+        
     
         return $transaksi;
     }

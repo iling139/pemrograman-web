@@ -24,6 +24,26 @@
           </button>
         </div>
 
+        <!-- Tambahkan Flash Message setelah ini -->
+        <?php if ($this->session->flashdata('success')): ?>
+  <div id="flash-success" class="mb-4 p-4 rounded-lg bg-green-100 border border-green-400 text-green-800 transition-opacity duration-500">
+    <div class="flex justify-between items-center">
+      <span><?= $this->session->flashdata('success'); ?></span>
+      <button onclick="closeFlash('flash-success')" class="text-green-700 hover:text-green-900 font-bold text-xl">&times;</button>
+    </div>
+  </div>
+<?php endif; ?>
+
+<?php if ($this->session->flashdata('error')): ?>
+  <div id="flash-error" class="mb-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-800 transition-opacity duration-500">
+    <div class="flex justify-between items-center">
+      <span><?= $this->session->flashdata('error'); ?></span>
+      <button onclick="closeFlash('flash-error')" class="text-red-700 hover:text-red-900 font-bold text-xl">&times;</button>
+    </div>
+  </div>
+<?php endif; ?>
+
+
         <!-- Form Tambah -->
         <div id="formTambah" class="bg-white p-6 rounded-lg shadow-md mb-6 hidden">
           <form action="<?= site_url('menu/add'); ?>" method="POST" enctype="multipart/form-data">
@@ -145,6 +165,31 @@
 
   toggleForm('formEdit');
 }
+// Auto hide after 3 seconds
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      const success = document.getElementById('flash-success');
+      const error = document.getElementById('flash-error');
+
+      if (success) success.style.opacity = 0;
+      if (error) error.style.opacity = 0;
+
+      // Remove from DOM after transition
+      setTimeout(() => {
+        if (success) success.remove();
+        if (error) error.remove();
+      }, 500); // after transition
+    }, 3000);
+  });
+
+  // Manual close button
+  function closeFlash(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.opacity = 0;
+      setTimeout(() => el.remove(), 500);
+    }
+  }
 
   lucide.createIcons();
 </script>

@@ -22,5 +22,12 @@ class M_Menu extends CI_Model {
     public function delete($id) {
         return $this->db->where('id', $id)->delete('menu');
     }
+    public function is_used_in_transaksi($id_menu)
+{
+    $this->db->where('menu_id', $id_menu);
+    $query = $this->db->get('transaksi_detail');
+    return $query->num_rows() > 0;
+}
+
 }
 ?>

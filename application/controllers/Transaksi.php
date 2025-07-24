@@ -15,6 +15,7 @@ class Transaksi extends CI_Controller {
         $data['menu'] = $this->M_Menu->get_all();
         $this->load->view('transaksi/form', $data);
     }
+    
 
     public function simpan() {
         $user_id = $this->session->userdata('user_id');
@@ -24,20 +25,35 @@ class Transaksi extends CI_Controller {
     
         $total = 0;
         $detail = [];
+
+        
     
         // Hitung total & siapkan detail
         foreach($items as $menu_id => $qty) {
             if($qty > 0) {
                 $menu = $this->M_Menu->get_by_id($menu_id);
+        
+                // Cek apakah stok cukup
+                if ($menu->stok < $qty) {
+                    $this->session->set_flashdata('error', 'Stok menu "'.$menu->nama_menu.'" tidak mencukupi!');
+                    redirect('transaksi');
+                    return;
+                  }
+                  
+        
                 $subtotal = $menu->harga * $qty;
                 $total += $subtotal;
                 $detail[] = [
-                    'menu_id' => $menu_id,
-                    'qty'     => $qty,
-                    'subtotal'=> $subtotal
+                    'menu_id'       => $menu_id,
+                    'nama_menu'     => $menu->nama_menu,
+                    'harga_satuan'  => $menu->harga,
+                    'qty'           => $qty,
+                    'subtotal'      => $subtotal
                 ];
             }
         }
+        
+        
     
         if($total > 0) {
             // Buat nomor antrian acak 3 digit (misal: 153)

@@ -8,8 +8,20 @@ class M_Transaksi extends CI_Model {
         $transaksi_id = $this->db->insert_id();
     
         foreach ($detail as &$d) {
+            // Ambil data menu (nama dan harga saat itu)
+            $menu = $this->db->get_where('menu', ['id' => $d['menu_id']])->row();
+        
             $d['transaksi_id'] = $transaksi_id;
+            $d['nama_menu'] = $menu->nama_menu;
+            $d['harga_satuan'] = $menu->harga;
+        
+            // Kurangi stok
+            $this->db->set('stok', 'stok - '.$d['qty'], false);
+            $this->db->where('id', $d['menu_id']);
+            $this->db->update('menu');
         }
+        
+        
         $this->db->insert_batch('transaksi_detail', $detail);
     
         return $transaksi_id;
@@ -59,20 +71,22 @@ class M_Transaksi extends CI_Model {
     }
     
     public function get_detail($transaksi_id) {
-        $this->db->select('d.*, m.nama_menu, m.harga');
+        $this->db->select('d.*, m.nama_menu');
         $this->db->from('transaksi_detail d');
         $this->db->join('menu m', 'm.id = d.menu_id');
         $this->db->where('d.transaksi_id', $transaksi_id);
         return $this->db->get()->result();
     }
+    
+    
     public function get_menu_terlaris() {
-        $this->db->select('m.nama_menu, SUM(d.qty) as total');
-        $this->db->from('transaksi_detail d');
-        $this->db->join('menu m', 'm.id = d.menu_id');
-        $this->db->group_by('m.nama_menu');
+        $this->db->select('nama_menu, SUM(qty) as total');
+        $this->db->from('transaksi_detail');
+        $this->db->group_by('nama_menu');
         $this->db->order_by('total', 'DESC');
         return $this->db->get()->result();
     }
+    
     
 }
 ?>
